@@ -1,0 +1,45 @@
+{
+	"name": "felixnagel/typo3-ter-release-github-action",
+	"type": "",
+	"description": "Example workflow how to do a TYPO3 CMS TER release using a GitHub workflow action.",
+	"keywords": [
+		"TYPO3",
+		"GitHub",
+		"CMS",
+		"workflow",
+		"action",
+		"TER",
+		"release",
+		"version",
+		"example"
+	],
+	"homepage": "https://github.com/fnagel/typo3-ter-release-github-action",
+	"support": {
+		"issues": "https://github.com/fnagel/typo3-ter-release-github-action/issues",
+		"docs": "https://github.com/fnagel/typo3-ter-release-github-action/blob/master/README.md",
+		"source": "https://github.com/fnagel/typo3-ter-release-github-action"
+	},
+	"authors": [
+		{
+			"name": "Felix Nagel",
+			"email": "info@felixnagel.com",
+			"role": "Project Leader, Developer"
+		}
+	],
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": "^7.*",
+		"namelesscoder/typo3-repository-client": "^2.0"
+	},
+	"require-dev": {
+		"sensiolabs/security-checker": "^6.0"
+	},
+	"scripts": {
+		"test": [
+			"@test-vendor-security"
+		],
+		"test-vendor-security": [
+			"vendor/bin/security-checker security:check"
+		]
+	}
+}
