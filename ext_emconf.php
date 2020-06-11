@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TER upload test',
-    'description' => 'Dummy extension for testing automatized TER deployments.',
+    'description' => 'Dummy extension for testing automatized TER releases using GitHub Actions. See repository readme!',
     'category' => 'example',
     'author' => 'Felix Nagel',
     'author_email' => 'info@felixnagel.com',
@@ -10,9 +10,11 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'alpha',
     'uploadfolder' => '0',
     'clearCacheOnLoad' => 0,
-    'version' => '0.0.1',
+    'version' => '0.0.25',
     'constraints' => [
-        'depends' => [],
+        'depends' => [
+            'typo3' => '9.5.0-10.4.99',
+        ],
         'conflicts' => [],
         'suggests' => [],
     ],
