@@ -1,6 +1,6 @@
 {
 	"name": "felixnagel/typo3-ter-release-github-action",
-	"type": "",
+	"type": "project",
 	"description": "Example workflow how to do a TYPO3 CMS TER release using a GitHub workflow action.",
 	"keywords": [
 		"TYPO3",
@@ -28,7 +28,7 @@
 	],
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"php": "^7.*",
+		"php": "^7",
 		"namelesscoder/typo3-repository-client": "^2.0"
 	},
 	"require-dev": {
