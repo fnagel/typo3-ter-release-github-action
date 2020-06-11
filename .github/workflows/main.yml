@@ -88,7 +88,13 @@ jobs:
       matrix:
         php-versions: [7.2]
 
+    env:
+      TYPO3_USER: ${{ secrets.TYPO3_USER }}
+
     steps:
+      - name: Output secret
+        run: echo "$TYPO3_USER"
+
       - uses: actions/checkout@v2
 
       - uses: shivammathur/setup-php@v2
@@ -106,16 +112,10 @@ jobs:
             php-${{ matrix.php-versions }}-
 
       - name: Install composer dependencies
-        run: composer install --no-dev --prefer-dist --no-progress --no-suggest
+        run: COMPOSER_VENDOR_DIR=~/composer-vendor composer install --no-dev --prefer-dist --no-progress --no-suggest
 
       - name: List files
         run: ls -liash ./
 
-      - name: Output secret
-        run: echo "$TYPO3_USER"
-
-      - name: Output commit message
-        run: echo "${{ github.event.head_commit.message }}"
-
 #      - name: Upload to TER
-#        run: vendor/bin/upload ./ $TYPO3_USER $TYPO3_PASSWORD ""
+#        run: vendor/bin/upload ./ $TYPO3_USER $TYPO3_PASSWORD "${{ github.event.head_commit.message }}"
