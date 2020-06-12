@@ -107,4 +107,4 @@ jobs:
         run: COMPOSER_VENDOR_DIR=~/composer-vendor composer install --no-dev --prefer-dist --no-progress --no-suggest
 
       - name: Upload to TER
-        run: vendor/bin/upload ./ "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}"
+        run: ~/composer-vendor/bin/upload ./ "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}"
