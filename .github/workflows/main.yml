@@ -84,14 +84,14 @@ jobs:
         php-versions: [7.2]
 
     env:
-      TYPO3_EXTENSION_KEY: "fna_test_ter"
       TYPO3_USER: ${{ secrets.TYPO3_USER }}
       TYPO3_PASSWORD: ${{ secrets.TYPO3_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v2
         with:
-          path: ${{ env.TYPO3_EXTENSION_KEY }}
+          # Add extension key here or remove if repository name is the extension key
+          path: fna_test_ter
 
       - uses: shivammathur/setup-php@v2
         with:
