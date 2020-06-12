@@ -1,5 +1,1 @@
-# vendor
-# build
-
-# ignore generated documentation
-*GENERATED*
+vendor

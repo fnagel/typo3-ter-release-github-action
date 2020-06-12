@@ -78,10 +78,6 @@ jobs:
     if: needs.tag-valid.outputs.status == 'true'
 
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-      matrix:
-        php-versions: [7.2]
 
     env:
       # Add your extension key
@@ -96,7 +92,7 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: 7.4
           extensions: intl, mbstring, xml, soap, zip, curl
 
       - name: Install TYPO3 TER client
@@ -108,5 +104,5 @@ jobs:
       - name: List extension folder
         run: ls -liash ./$TYPO3_EXTENSION_KEY
 
-      - name: Upload extension "$TYPO3_EXTENSION_KEY" to TER
-        run: php ~/.composer/vendor/bin/upload "./$TYPO3_EXTENSION_KEY" "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
+      - name: Upload extension "${{ env.TYPO3_EXTENSION_KEY }}" to TER
+        run: php ~/.composer/vendor/bin/upload "./$TYPO3_EXTENSION_KEY" "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}"
