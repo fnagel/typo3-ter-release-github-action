@@ -29,15 +29,10 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: intl, mbstring
 
-      - name: Get composer cache cirectory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-
       - name: Cache composer dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v1
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ~/.composer/cache
           key: php-${{ matrix.php-versions }}-typo3-${{ matrix.typo3-versions }}-composer-${{ hashFiles('composer.json') }}
           restore-keys: |
             php-${{ matrix.php-versions }}-typo3-${{ matrix.typo3-versions }}-composer-
@@ -104,14 +99,8 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: intl, mbstring, xml, soap, zip, curl
 
-      - name: List folder
-        run: ls -liash ./
-
       - name: Install typo3-repository-client using composer
         run: composer global require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
-
-      - name: List repo folder
-        run: ls -liash ./$TYPO3_EXTENSION_KEY
 
       - name: Remove .git folder
         run: rm -rf ./$TYPO3_EXTENSION_KEY/.git
