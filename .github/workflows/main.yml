@@ -29,6 +29,11 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: intl, mbstring
 
+      - name: Get composer cache cirectory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - name: Cache composer dependencies
         uses: actions/cache@v2
         with:
@@ -84,6 +89,7 @@ jobs:
         php-versions: [7.2]
 
     env:
+      TYPO3_EXTENSION_KEY: fna_test_ter
       TYPO3_USER: ${{ secrets.TYPO3_USER }}
       TYPO3_PASSWORD: ${{ secrets.TYPO3_PASSWORD }}
 
@@ -91,7 +97,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           # Add extension key here or remove if repository name is the extension key
-          path: fna_test_ter
+#          path: fna_test_ter
+          path: ${{ env.TYPO3_EXTENSION_KEY }}
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -101,33 +108,14 @@ jobs:
       - name: List folder
         run: ls -liash ./
 
-      - name: Get composer cache cirectory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Install typo3-repository-client using composer
+        run: composer global require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
 
-      - name: Cache composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: php-${{ matrix.php-versions }}-composer-${{ hashFiles('composer.json') }}
-          restore-keys: |
-            php-${{ matrix.php-versions }}-composer-
-            php-${{ matrix.php-versions }}-
-
-      - name: Install composer dependencies
-        run: composer glonbal require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
-#        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require helhum/ter-client "dev-master" --prefer-dist --no-progress --no-suggest
-
-      - name: List folder
+      - name: List GITHUB_WORKSPACE folder
         run: ls -liash $GITHUB_WORKSPACE
 
       - name: List currentfolder
         run: ls -liash ./
 
-      - name: List vendors
-        run: ls -liash .vendor-ter-release
-
       - name: Upload to TER
         run: php ~/.composer/vendor/bin/upload ./ "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
-#        run: php .vendor-ter-release/bin/ter-client upload $TYPO3_USER ./ -u "$TYPO3_USER" -p "$TYPO3_PASSWORD" -m "${{ github.event.head_commit.message }}" -vvv
