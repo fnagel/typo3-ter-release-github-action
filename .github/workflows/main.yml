@@ -91,7 +91,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: $TYPO3_EXTENSION_KEY
+          path: ${{ TYPO3_EXTENSION_KEY }}
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -120,6 +120,9 @@ jobs:
 #        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require helhum/ter-client "dev-master" --prefer-dist --no-progress --no-suggest
 
       - name: List folder
+        run: ls -liash $GITHUB_WORKSPACE
+
+      - name: List currentfolder
         run: ls -liash ./
 
       - name: List vendors
