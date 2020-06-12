@@ -108,13 +108,16 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: php-${{ matrix.php-versions }}-composer-${{ hashFiles('composer.lock') }}
+          key: php-${{ matrix.php-versions }}-composer-${{ hashFiles('composer.json') }}
           restore-keys: |
             php-${{ matrix.php-versions }}-composer-
             php-${{ matrix.php-versions }}-
 
       - name: Install composer dependencies
-        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require helhum/ter-client "#dev-master" --prefer-dist --no-progress --no-suggest
+        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require helhum/ter-client "dev-master" --prefer-dist --no-progress --no-suggest
+
+      - name: List folder
+        run: ls -liash ./
 
       - name: List vendors
         run: ls -liash .vendor-ter-release
