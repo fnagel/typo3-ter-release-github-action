@@ -30,9 +30,9 @@ jobs:
           extensions: intl, mbstring
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
-          path: ~/.composer/cache
+          path: ${{ steps.composer-cache.outputs.dir }}
           key: php-${{ matrix.php-versions }}-typo3-${{ matrix.typo3-versions }}-composer-${{ hashFiles('composer.json') }}
           restore-keys: |
             php-${{ matrix.php-versions }}-typo3-${{ matrix.typo3-versions }}-composer-
@@ -90,6 +90,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          path: $TYPO3_EXTENSION_KEY
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -114,7 +116,8 @@ jobs:
             php-${{ matrix.php-versions }}-
 
       - name: Install composer dependencies
-        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require helhum/ter-client "dev-master" --prefer-dist --no-progress --no-suggest
+        run: composer glonbal require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
+#        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require helhum/ter-client "dev-master" --prefer-dist --no-progress --no-suggest
 
       - name: List folder
         run: ls -liash ./
@@ -123,5 +126,5 @@ jobs:
         run: ls -liash .vendor-ter-release
 
       - name: Upload to TER
-#        run: php .vendor-ter-release/bin/upload ./ "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
-        run: php .vendor-ter-release/bin/ter-client upload $TYPO3_USER ./ -u "$TYPO3_USER" -p "$TYPO3_PASSWORD" -m "${{ github.event.head_commit.message }}" -vvv
+        run: php ~/.composer/vendor/bin/upload ./ "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
+#        run: php .vendor-ter-release/bin/ter-client upload $TYPO3_USER ./ -u "$TYPO3_USER" -p "$TYPO3_PASSWORD" -m "${{ github.event.head_commit.message }}" -vvv
