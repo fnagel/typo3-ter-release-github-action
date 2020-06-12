@@ -89,7 +89,8 @@ jobs:
         php-versions: [7.2]
 
     env:
-      TYPO3_EXTENSION_KEY: ${{ secrets.TYPO3_EXTENSION_KEY }}
+      # Add your extension key
+      TYPO3_EXTENSION_KEY: fna_test_ter
       TYPO3_USER: ${{ secrets.TYPO3_USER }}
       TYPO3_PASSWORD: ${{ secrets.TYPO3_PASSWORD }}
 
@@ -101,7 +102,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: cli, intl, mbstring, xml, soap, zip, curl
+          extensions: intl, mbstring, xml, soap, zip, curl
 
       - name: List folder
         run: ls -liash ./
@@ -109,11 +110,14 @@ jobs:
       - name: Install typo3-repository-client using composer
         run: composer global require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
 
-      - name: List GITHUB_WORKSPACE folder
-        run: ls -liash $GITHUB_WORKSPACE
+      - name: List repo folder
+        run: ls -liash ./$TYPO3_EXTENSION_KEY
+
+      - name: Remove .git folder
+        run: rm -rf ./$TYPO3_EXTENSION_KEY/.git
 
       - name: List repo folder
         run: ls -liash ./$TYPO3_EXTENSION_KEY
 
       - name: Upload to TER
-        run: php ~/.composer/vendor/bin/upload ./$TYPO3_EXTENSION_KEY "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
+        run: php ~/.composer/vendor/bin/upload "./$TYPO3_EXTENSION_KEY" "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
