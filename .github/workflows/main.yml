@@ -99,14 +99,14 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: intl, mbstring, xml, soap, zip, curl
 
-      - name: Install typo3-repository-client using composer
+      - name: Install TYPO3 TER client
         run: composer global require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
 
       - name: Remove .git folder
         run: rm -rf ./$TYPO3_EXTENSION_KEY/.git
 
-      - name: List repo folder
+      - name: List extension folder
         run: ls -liash ./$TYPO3_EXTENSION_KEY
 
-      - name: Upload to TER
+      - name: Upload extension "$TYPO3_EXTENSION_KEY" to TER
         run: php ~/.composer/vendor/bin/upload "./$TYPO3_EXTENSION_KEY" "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
