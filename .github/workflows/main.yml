@@ -84,7 +84,9 @@ jobs:
         php-versions: [7.2]
 
     env:
+      TYPO3_EXTENSION_KEY: fna_test_ter
       TYPO3_USER: ${{ secrets.TYPO3_USER }}
+      TYPO3_PASSWORD: ${{ secrets.TYPO3_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v2
@@ -97,20 +99,26 @@ jobs:
       - name: List folder
         run: ls -liash ./
 
+      - name: Get composer cache cirectory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
-          path: ~/.composer/cache
-          key: php-${{ matrix.php-versions }}-composer-${{ hashFiles('composer.json') }}
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: php-${{ matrix.php-versions }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: |
             php-${{ matrix.php-versions }}-composer-
             php-${{ matrix.php-versions }}-
 
       - name: Install composer dependencies
-        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
+        run: COMPOSER_VENDOR_DIR=.vendor-ter-release composer require helhum/ter-client "#dev-master" --prefer-dist --no-progress --no-suggest
 
       - name: List vendors
         run: ls -liash .vendor-ter-release
 
       - name: Upload to TER
-        run: php .vendor-ter-release/bin/upload ./ "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
+#        run: php .vendor-ter-release/bin/upload ./ "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}" true
+        run: php .vendor-ter-release/bin/ter-client upload $TYPO3_USER ./ -u "$TYPO3_USER" -p "$TYPO3_PASSWORD" -m "${{ github.event.head_commit.message }}" -vvv
