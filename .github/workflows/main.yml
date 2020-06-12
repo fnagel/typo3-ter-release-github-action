@@ -91,7 +91,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: ${{ TYPO3_EXTENSION_KEY }}
+          path: "$TYPO3_EXTENSION_KEY"
 
       - uses: shivammathur/setup-php@v2
         with:
