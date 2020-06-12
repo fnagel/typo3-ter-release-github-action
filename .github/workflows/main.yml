@@ -104,7 +104,7 @@ jobs:
             php-${{ matrix.php-versions }}-
 
       - name: Install composer dependencies
-        run: COMPOSER_VENDOR_DIR=~/composer-vendor composer require namelesscoder/typo3-repository-client "^2.0" --no-dev --prefer-dist --no-progress --no-suggest
+        run: COMPOSER_VENDOR_DIR=~/composer-vendor composer require namelesscoder/typo3-repository-client "^2.0" --prefer-dist --no-progress --no-suggest
 
       - name: List vendors
         run: ls -liash ~/composer-vendor
