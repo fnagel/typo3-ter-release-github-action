@@ -16,9 +16,8 @@ jobs:
 
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 2
       matrix:
-        php-versions: [7.2]
+        php-versions: [7.4]
         typo3-versions: [10.4]
 
     steps:
@@ -46,7 +45,7 @@ jobs:
 
   # The actual TER upload job
   tag-valid:
-    name: Check if trigger is a valid tag
+    name: Check for valid tag
 
     # Run only if tests job is successful
     needs: tests
@@ -60,7 +59,7 @@ jobs:
       status: ${{ steps.check-tag.outputs.match }}
 
     steps:
-      # Check for a valid tag, valid as in use your own regex if its a valid tag for your setup
+      # Check for a valid tag, valid as in "use your own regex"
       # By default, this will check for a "1.2.345" naming scheme
       - name: Check if trigger is a valid tag
         id: check-tag
@@ -71,7 +70,7 @@ jobs:
 
   # The actual TER upload job
   ter-release:
-    name: TER deployment running PHP ${{ matrix.php-versions }}
+    name: TYPO3 TER release
 
     # Depend on a valid tag
     needs: tag-valid
@@ -104,5 +103,5 @@ jobs:
       - name: List extension folder
         run: ls -liash ./$TYPO3_EXTENSION_KEY
 
-      - name: Upload extension "${{ env.TYPO3_EXTENSION_KEY }}" to TER
+      - name: Upload "${{ env.TYPO3_EXTENSION_KEY }}" ${{ github.event.ref }} to TER
         run: php ~/.composer/vendor/bin/upload "./$TYPO3_EXTENSION_KEY" "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}"
