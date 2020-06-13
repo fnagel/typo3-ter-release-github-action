@@ -101,7 +101,7 @@ jobs:
         run: rm -rf ./$TYPO3_EXTENSION_KEY/.git
 
       - name: List extension folder
-        run: ls -liash ./$TYPO3_EXTENSION_KEY
+        run: ls -liAsh ./$TYPO3_EXTENSION_KEY
 
-      - name: Upload "${{ env.TYPO3_EXTENSION_KEY }}" ${{ github.event.ref }} to TER
+      - name: Upload EXT:${{ env.TYPO3_EXTENSION_KEY }} as ${{ github.event.ref }} to TER
         run: php ~/.composer/vendor/bin/upload "./$TYPO3_EXTENSION_KEY" "$TYPO3_USER" "$TYPO3_PASSWORD" "${{ github.event.head_commit.message }}"
