@@ -43,7 +43,7 @@ jobs:
       - name: Run tests
         run: composer run-script test
 
-  # The actual TER upload job
+  # Check if there is a valid tag
   tag-valid:
     name: Check for valid tag
 
