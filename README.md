@@ -45,6 +45,7 @@ That's it! Now every tag pushed will trigger a TER release.
 
 ## Info
 
+* Make sure to set the new version in `ext_emconf.php` when releasing a new version
 * Dotfiles and files / folders configured in `.gitignore` will be excluded in 
     the TER release package (`typo3-repository-client` feature)
 
